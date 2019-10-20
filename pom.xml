@@ -6,13 +6,15 @@
 
     <groupId>io.github.asharapov.logtrace</groupId>
     <artifactId>logtrace-parent</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.8.0</version>
     <packaging>pom</packaging>
 
+    <name>logtrace</name>
     <description>
         Distributed logging and tracing framework that uses Elasticsearch as a backend service.
     </description>
     <url>https://github.com/asharapov/logtrace</url>
+    <inceptionYear>2019</inceptionYear>
     <developers>
         <developer>
             <name>Anton Sharapov</name>

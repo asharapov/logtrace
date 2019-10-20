@@ -6,11 +6,13 @@
     <parent>
         <groupId>io.github.asharapov.logtrace</groupId>
         <artifactId>logtrace-parent</artifactId>
-        <version>0.8-SNAPSHOT</version>
+        <version>0.8.0</version>
     </parent>
 
     <artifactId>logtrace-core</artifactId>
     <packaging>jar</packaging>
+
+    <name>logtrace-core</name>
     <description>LogTrace public API</description>
 
     <properties>
