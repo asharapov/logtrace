@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="logtrace-tests" status="warn" verbose="true" packages="io.github.asharapov.logtrace.log4j2">
+
+    <Properties>
+        <Property name="app.dir">.</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="stdout">
+            <PatternLayout pattern="%highlight{%level: %msg{nolookups}}%n"/>
+        </Console>
+
+        <File name="simple-file" fileName="${sys:app.dir}/logs/log4j2-simple.log" append="false">
+            <PatternLayout pattern="%date{ISO8601} [%thread] %level %logger{1} - %msg{nolookups}%n"/>
+        </File>
+
+        <File name="logtrace-file" fileName="${sys:app.dir}/logs/log4j2-elastic.log" append="false" ignoreExceptions="false">
+            <LogTraceJsonLayout formatted="false"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="trace">
+            <AppenderRef ref="stdout">
+                <ThresholdFilter level="info"/>
+            </AppenderRef>
+        </Root>
+
+        <Logger name="io.github.asharapov.logtrace" level="trace" additivity="false">
+            <AppenderRef ref="logtrace-file"/>
+            <AppenderRef ref="simple-file"/>
+        </Logger>
+
+        <Logger name="tracer" level="trace" additivity="false">
+            <AppenderRef ref="logtrace-file"/>
+            <AppenderRef ref="simple-file"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

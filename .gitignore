@@ -1,0 +1,13 @@
+/build
+/logs
+target
+tmp
+.DS_Store
+.allure
+.classpath
+.project
+.settings
+.idea
+*.iml
+*.bak
+*.log
