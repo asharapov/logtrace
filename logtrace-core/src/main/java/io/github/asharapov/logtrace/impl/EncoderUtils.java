@@ -9,6 +9,13 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -72,8 +79,69 @@ public class EncoderUtils {
         }
 
         /**
+         * Преобразует переданный в аргументе объект в строку удовлетворяющую спецификации ISO 8601.<br/>
+         * Целевой формат (в общем случае): <code>yyyy-MM-ddTHH:mm:ss.SX</code>.
+         *
+         * @param temporal объект, описывающий дату и/или время
+         */
+        public String formatISODateTime(TemporalAccessor temporal) {
+            final StringBuilder buf = tsbuf;
+            buf.setLength(0);
+            int p;
+            if (temporal instanceof Instant) {
+                temporal = ((Instant) temporal).atZone(ZoneId.systemDefault());
+            }
+            final LocalDate ld = TemporalQueries.localDate().queryFrom(temporal);
+            if (ld != null) {
+                final int year = ld.getYear();
+                if (Math.abs(year) < 1000) {
+                    if (year < 0) {
+                        buf.append(year - 10000).deleteCharAt(1);
+                    } else {
+                        buf.append(year + 10000).deleteCharAt(0);
+                    }
+                } else {
+                    if (year > 9999) {
+                        buf.append('+');
+                    }
+                    buf.append(year);
+                }
+                p = ld.getMonthValue();
+                buf.append(p < 10 ? "-0" : "-").append(p);
+                p = ld.getDayOfMonth();
+                buf.append(p < 10 ? "-0" : "-").append(p);
+            }
+            final LocalTime lt = TemporalQueries.localTime().queryFrom(temporal);
+            if (lt != null) {
+                if (ld != null) {
+                    buf.append('T');
+                }
+                p = lt.getHour();
+                buf.append(p < 10 ? "0" : "").append(p);
+                p = lt.getMinute();
+                buf.append(p < 10 ? ":0" : ":").append(p);
+                p = lt.getSecond();
+                buf.append(p < 10 ? ":0" : ":").append(p);
+                p = lt.getNano() / 1000_000;
+                if (p < 10) {
+                    buf.append(".00");
+                } else if (p < 100) {
+                    buf.append(".0");
+                } else {
+                    buf.append('.');
+                }
+                buf.append(p);
+
+            }
+            final ZoneOffset zo = TemporalQueries.offset().queryFrom(temporal);
+            if (zo != null) {
+                buf.append(zo.getId());
+            }
+            return buf.length() > 0 ? buf.toString() : temporal.toString();
+        }
+
+        /**
          * Преобразует переданную в аргументе дату в строку формата <code>yyyy-MM-ddTHH:mm:ss.SX</code>.
-         * Если исходная дата равна <code>null</code> то метод не делает ничего.
          *
          * @param timestamp дата которую требуется преобразовать в строку.
          */
@@ -261,27 +329,30 @@ public class EncoderUtils {
                     case BOOLEAN:
                         jg.writeBooleanField(tag.getName(), (boolean) v);
                         break;
-                    case INT:
-                        jg.writeNumberField(tag.getName(), (int) v);
+                    case NUMBER: {
+                        if (v instanceof Integer) {
+                            jg.writeNumberField(tag.getName(), (int) v);
+                        } else if (v instanceof Long) {
+                            jg.writeNumberField(tag.getName(), (long) v);
+                        } else if (v instanceof Double) {
+                            jg.writeNumberField(tag.getName(), (double) v);
+                        } else if (v instanceof Float) {
+                            jg.writeNumberField(tag.getName(), (float) v);
+                        } else if (v instanceof BigDecimal) {
+                            jg.writeNumberField(tag.getName(), (BigDecimal) v);
+                        } else if (v instanceof BigInteger) {
+                            jg.writeFieldName(tag.getName());
+                            jg.writeNumber((BigInteger) v);
+                        } else {
+                            jg.writeNumberField(tag.getName(), ((Number) v).intValue());
+                        }
                         break;
-                    case LONG:
-                        jg.writeNumberField(tag.getName(), (long) v);
-                        break;
-                    case DOUBLE:
-                        jg.writeNumberField(tag.getName(), (double) v);
-                        break;
-                    case FLOAT:
-                        jg.writeNumberField(tag.getName(), (float) v);
-                        break;
-                    case BIG_DECIMAL:
-                        jg.writeNumberField(tag.getName(), (BigDecimal) v);
-                        break;
-                    case BIG_INTEGER:
-                        jg.writeFieldName(tag.getName());
-                        jg.writeNumber((BigInteger) v);
-                        break;
+                    }
                     case DATE:
                         jg.writeStringField(tag.getName(), formatISODateTime(((Date) v).getTime()));
+                        break;
+                    case TEMPORAL:
+                        jg.writeStringField(tag.getName(), formatISODateTime((TemporalAccessor) v));
                         break;
                 }
             }

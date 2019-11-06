@@ -1,8 +1,7 @@
 package io.github.asharapov.logtrace;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,13 +17,9 @@ public class Tag implements Serializable {
     public enum Type {
         STRING,
         BOOLEAN,
-        INT,
-        LONG,
-        DOUBLE,
-        FLOAT,
-        BIG_DECIMAL,
-        BIG_INTEGER,
+        NUMBER,
         DATE,
+        TEMPORAL
     }
 
     private final Type type;
@@ -39,32 +34,16 @@ public class Tag implements Serializable {
         this(Type.BOOLEAN, name, value);
     }
 
-    public Tag(final String name, final Integer value) {
-        this(Type.INT, name, value);
-    }
-
-    public Tag(final String name, final Long value) {
-        this(Type.LONG, name, value);
-    }
-
-    public Tag(final String name, final Double value) {
-        this(Type.DOUBLE, name, value);
-    }
-
-    public Tag(final String name, final Float value) {
-        this(Type.FLOAT, name, value);
-    }
-
-    public Tag(final String name, final BigDecimal value) {
-        this(Type.BIG_DECIMAL, name, value);
-    }
-
-    public Tag(final String name, final BigInteger value) {
-        this(Type.BIG_INTEGER, name, value);
+    public Tag(final String name, final Number value) {
+        this(Type.NUMBER, name, value);
     }
 
     public Tag(final String name, final Date value) {
         this(Type.DATE, name, value);
+    }
+
+    public Tag(final String name, final TemporalAccessor value) {
+        this(Type.TEMPORAL, name, value);
     }
 
     private Tag(final Type type, final String name, final Object value) {

@@ -1,8 +1,8 @@
 package io.github.asharapov.logtrace;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
+import java.util.Map;
 
 import org.slf4j.Logger;
 
@@ -21,6 +21,10 @@ public interface SpanBuilder {
 
     SpanBuilder withLogger(Logger logger);
 
+    SpanBuilder withoutEvents();
+
+    SpanBuilder withClosingEvent();
+
     SpanBuilder withEventFilter(EventFilter predicate);
 
     SpanBuilder withEventName(String name);
@@ -35,19 +39,13 @@ public interface SpanBuilder {
 
     SpanBuilder withTag(String key, Boolean value);
 
-    SpanBuilder withTag(String key, Integer value);
-
-    SpanBuilder withTag(String key, Long value);
-
-    SpanBuilder withTag(String key, Double value);
-
-    SpanBuilder withTag(String key, Float value);
-
-    SpanBuilder withTag(String key, BigDecimal value);
-
-    SpanBuilder withTag(String key, BigInteger value);
+    SpanBuilder withTag(String key, Number value);
 
     SpanBuilder withTag(String key, Date value);
+
+    SpanBuilder withTag(String key, TemporalAccessor value);
+
+    SpanBuilder withTags(final Map<String, ?> attrs);
 
     LogSpan activate();
 }

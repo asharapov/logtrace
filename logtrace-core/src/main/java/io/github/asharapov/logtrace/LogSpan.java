@@ -1,10 +1,10 @@
 package io.github.asharapov.logtrace;
 
 import java.io.Closeable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>Представляет собой основополагающий строительный блок для задач логирования и трассировки выполнения задачи в распределенных системах.
@@ -71,13 +71,28 @@ public interface LogSpan extends Closeable {
     List<Tag> getTags();
 
     /**
+     * Возвращает сведения о теге с указанным именем для данного блока работ.
+     *
+     * @param tagName название атрибута.
+     * @return сведения об искомом теге если он присутствует в описании для данного блока работ.
+     */
+    Optional<Tag> getTag(String tagName);
+
+    /**
+     * Возвращает <code>true</code> если описание данного блока работ содержит атрибут с указанным названием.
+     *
+     * @param tagName название атрибута.
+     */
+    boolean hasTag(String tagName);
+
+    /**
      * Установка атрибута и его значения для данного блока работ.
      *
      * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
      * @param value значение атрибута.
      * @return ссылка на данный блок работ.
      */
-    LogSpan setTag(String key, Boolean value);
+    LogSpan setTag(String key, Enum<?> value);
 
     /**
      * Установка атрибута и его значения для данного блока работ.
@@ -95,7 +110,7 @@ public interface LogSpan extends Closeable {
      * @param value значение атрибута.
      * @return ссылка на данный блок работ.
      */
-    LogSpan setTag(String key, Integer value);
+    LogSpan setTag(String key, Boolean value);
 
     /**
      * Установка атрибута и его значения для данного блока работ.
@@ -104,43 +119,7 @@ public interface LogSpan extends Closeable {
      * @param value значение атрибута.
      * @return ссылка на данный блок работ.
      */
-    LogSpan setTag(String key, Long value);
-
-    /**
-     * Установка атрибута и его значения для данного блока работ.
-     *
-     * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
-     * @param value значение атрибута.
-     * @return ссылка на данный блок работ.
-     */
-    LogSpan setTag(String key, Double value);
-
-    /**
-     * Установка атрибута и его значения для данного блока работ.
-     *
-     * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
-     * @param value значение атрибута.
-     * @return ссылка на данный блок работ.
-     */
-    LogSpan setTag(String key, Float value);
-
-    /**
-     * Установка атрибута и его значения для данного блока работ.
-     *
-     * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
-     * @param value значение атрибута.
-     * @return ссылка на данный блок работ.
-     */
-    LogSpan setTag(String key, BigDecimal value);
-
-    /**
-     * Установка атрибута и его значения для данного блока работ.
-     *
-     * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
-     * @param value значение атрибута.
-     * @return ссылка на данный блок работ.
-     */
-    LogSpan setTag(String key, BigInteger value);
+    LogSpan setTag(String key, Number value);
 
     /**
      * Установка атрибута и его значения для данного блока работ.
@@ -150,6 +129,15 @@ public interface LogSpan extends Closeable {
      * @return ссылка на данный блок работ.
      */
     LogSpan setTag(String key, Date value);
+
+    /**
+     * Установка атрибута и его значения для данного блока работ.
+     *
+     * @param key   название атрибута. Представляет собой непустую строку из латинских букв и цифр.
+     * @param value значение атрибута.
+     * @return ссылка на данный блок работ.
+     */
+    LogSpan setTag(String key, TemporalAccessor value);
 
     /**
      * Отмечает что в ходе выполнения данного блока работ произошла ошибка существенно повлиявшая на его результаты.

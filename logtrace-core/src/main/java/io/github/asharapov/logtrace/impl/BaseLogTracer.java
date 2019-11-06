@@ -1,7 +1,6 @@
 package io.github.asharapov.logtrace.impl;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +9,8 @@ import io.github.asharapov.logtrace.EventFilter;
 import io.github.asharapov.logtrace.LogSpan;
 import io.github.asharapov.logtrace.LogTracer;
 import io.github.asharapov.logtrace.ScopeManager;
-import io.github.asharapov.logtrace.Tag;
 import io.github.asharapov.logtrace.SpanBuilder;
+import io.github.asharapov.logtrace.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +85,16 @@ public class BaseLogTracer implements LogTracer {
             return this;
         }
 
+        public SpanBuilder withoutEvents() {
+            this.predicate = (s -> false);
+            return this;
+        }
+
+        public SpanBuilder withClosingEvent() {
+            this.predicate = (s -> !s.isActive());
+            return this;
+        }
+
         @Override
         public SpanBuilder withEventFilter(final EventFilter predicate) {
             this.predicate = predicate;
@@ -132,42 +141,7 @@ public class BaseLogTracer implements LogTracer {
         }
 
         @Override
-        public SpanBuilder withTag(final String key, final Integer value) {
-            final Tag tag = new Tag(key, value);
-            tags.put(key, tag);
-            return this;
-        }
-
-        @Override
-        public SpanBuilder withTag(final String key, final Long value) {
-            final Tag tag = new Tag(key, value);
-            tags.put(key, tag);
-            return this;
-        }
-
-        @Override
-        public SpanBuilder withTag(final String key, final Double value) {
-            final Tag tag = new Tag(key, value);
-            tags.put(key, tag);
-            return this;
-        }
-
-        @Override
-        public SpanBuilder withTag(final String key, final Float value) {
-            final Tag tag = new Tag(key, value);
-            tags.put(key, tag);
-            return this;
-        }
-
-        @Override
-        public SpanBuilder withTag(final String key, final BigDecimal value) {
-            final Tag tag = new Tag(key, value);
-            tags.put(key, tag);
-            return this;
-        }
-
-        @Override
-        public SpanBuilder withTag(final String key, final BigInteger value) {
+        public SpanBuilder withTag(final String key, final Number value) {
             final Tag tag = new Tag(key, value);
             tags.put(key, tag);
             return this;
@@ -177,6 +151,44 @@ public class BaseLogTracer implements LogTracer {
         public SpanBuilder withTag(final String key, final Date value) {
             final Tag tag = new Tag(key, value);
             tags.put(key, tag);
+            return this;
+        }
+
+        @Override
+        public SpanBuilder withTag(final String key, final TemporalAccessor value) {
+            final Tag tag = new Tag(key, value);
+            tags.put(key, tag);
+            return this;
+        }
+
+        public SpanBuilder withTags(final Map<String, ?> attrs) {
+            if (attrs == null || attrs.isEmpty())
+                return this;
+
+            for (Map.Entry<String, ?> entry : attrs.entrySet()) {
+                final String key = entry.getKey();
+                final Object value = entry.getValue();
+                if (key == null || value == null)
+                    continue;
+
+                final Tag tag;
+                if (value instanceof CharSequence) {
+                    tag = new Tag(key, value.toString());
+                } else if (value instanceof Enum) {
+                    tag = new Tag(key, value.toString());
+                } else if (value instanceof Boolean) {
+                    tag = new Tag(key, (Boolean) value);
+                } else if (value instanceof Number) {
+                    tag = new Tag(key, (Number) value);
+                } else if (value instanceof Date) {
+                    tag = new Tag(key, (Date) value);
+                } else if (value instanceof TemporalAccessor) {
+                    tag = new Tag(key, (TemporalAccessor) value);
+                } else
+                    continue;
+                tags.put(key, tag);
+            }
+
             return this;
         }
 

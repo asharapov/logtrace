@@ -1,12 +1,12 @@
 package io.github.asharapov.logtrace.impl;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import io.github.asharapov.logtrace.DefaultConfiguration;
 import io.github.asharapov.logtrace.EventFilter;
@@ -125,9 +125,23 @@ public class BaseLogSpan implements LogSpan, Serializable {
     }
 
     @Override
-    public LogSpan setTag(final String key, final Boolean value) {
+    public Optional<Tag> getTag(final String tagName) {
+        for (Tag tag : tags) {
+            if (tag.getName().equals(tagName))
+                return Optional.of(tag);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean hasTag(String tagName) {
+        return getTag(tagName).isPresent();
+    }
+
+    @Override
+    public LogSpan setTag(final String key, final Enum<?> value) {
         if (value != null) {
-            setTag(new Tag(key, value));
+            setTag(new Tag(key, value.toString()));
         } else {
             removeTag(key);
         }
@@ -145,7 +159,7 @@ public class BaseLogSpan implements LogSpan, Serializable {
     }
 
     @Override
-    public LogSpan setTag(final String key, final Integer value) {
+    public LogSpan setTag(final String key, final Boolean value) {
         if (value != null) {
             setTag(new Tag(key, value));
         } else {
@@ -155,47 +169,7 @@ public class BaseLogSpan implements LogSpan, Serializable {
     }
 
     @Override
-    public LogSpan setTag(final String key, final Long value) {
-        if (value != null) {
-            setTag(new Tag(key, value));
-        } else {
-            removeTag(key);
-        }
-        return this;
-    }
-
-    @Override
-    public LogSpan setTag(final String key, final Double value) {
-        if (value != null) {
-            setTag(new Tag(key, value));
-        } else {
-            removeTag(key);
-        }
-        return this;
-    }
-
-    @Override
-    public LogSpan setTag(final String key, final Float value) {
-        if (value != null) {
-            setTag(new Tag(key, value));
-        } else {
-            removeTag(key);
-        }
-        return this;
-    }
-
-    @Override
-    public LogSpan setTag(final String key, final BigDecimal value) {
-        if (value != null) {
-            setTag(new Tag(key, value));
-        } else {
-            removeTag(key);
-        }
-        return this;
-    }
-
-    @Override
-    public LogSpan setTag(final String key, final BigInteger value) {
+    public LogSpan setTag(final String key, final Number value) {
         if (value != null) {
             setTag(new Tag(key, value));
         } else {
@@ -206,6 +180,16 @@ public class BaseLogSpan implements LogSpan, Serializable {
 
     @Override
     public LogSpan setTag(final String key, final Date value) {
+        if (value != null) {
+            setTag(new Tag(key, value));
+        } else {
+            removeTag(key);
+        }
+        return this;
+    }
+
+    @Override
+    public LogSpan setTag(final String key, final TemporalAccessor value) {
         if (value != null) {
             setTag(new Tag(key, value));
         } else {
