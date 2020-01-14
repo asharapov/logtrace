@@ -1,11 +1,8 @@
-package io.github.asharapov.logtrace.log4j;
+package io.github.asharapov.logtrace;
 
 import java.util.Date;
 
 import io.github.asharapov.logtrace.model.SessionInfo;
-import io.github.asharapov.logtrace.AbstractTest;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Anton Sharapov
  */
-public class MultiSpanTest extends AbstractTest {
+public abstract class MultiSpanTest extends AbstractTest {
 
     private static final Logger log = LoggerFactory.getLogger(MultiSpanTest.class);
     private static final LogTracer tracer = LogTracer.getDefault();
-
 
     @Test
     void test01() throws Exception {

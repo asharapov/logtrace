@@ -1,21 +1,21 @@
-package io.github.asharapov.logtrace.log4j2;
+package io.github.asharapov.logtrace;
 
 import java.io.IOException;
 
-import io.github.asharapov.logtrace.AbstractTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.event.Level;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Тесты log appenders без использования публичного LogTrace API.
  *
  * @author Anton Sharapov
  */
-public class SimpleTest extends AbstractTest {
+public abstract class SimpleTest extends AbstractTest {
 
     private static final Logger log = LoggerFactory.getLogger(SimpleTest.class);
 
