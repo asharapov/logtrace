@@ -109,15 +109,29 @@ public class LogTraceJsonEncoder<E extends ILoggingEvent> extends EncoderBase<E>
 
     private void writeThrowable(final EncoderUtils.State encstate, final JsonGenerator jg, final IThrowableProxy thrown) throws Throwable {
         if (thrown != null) {
-            final StackTraceElementProxy[] stepArray = thrown.getStackTraceElementProxyArray();
-            final StringBuilder buf = new StringBuilder(256);
-            for (StackTraceElementProxy step : stepArray) {
+            final StringBuilder buf = new StringBuilder(400);
+            for (StackTraceElementProxy step : thrown.getStackTraceElementProxyArray()) {
                 buf.append(CoreConstants.TAB);
                 buf.append(step.toString());
                 buf.append(EncoderUtils.DEFAULT_EOL);
             }
             final String stack = buf.toString();
-            final char[] hash = encstate.digest(stack.getBytes(StandardCharsets.UTF_8));
+
+            final IThrowableProxy rootCause = getRootThrowableProxy(thrown);
+            final String rootCauseStack;
+            if (rootCause == thrown) {
+                rootCauseStack = stack;
+            } else {
+                buf.setLength(0);
+                for (StackTraceElementProxy step : rootCause.getStackTraceElementProxyArray()) {
+                    buf.append(CoreConstants.TAB);
+                    buf.append(step.toString());
+                    buf.append(EncoderUtils.DEFAULT_EOL);
+                }
+                rootCauseStack = buf.toString();
+            }
+
+            final char[] hash = encstate.digest(rootCauseStack);
             jg.writeObjectFieldStart("thrown");
             jg.writeStringField("cls", thrown.getClassName());
             jg.writeStringField("msg", thrown.getMessage());
@@ -126,6 +140,19 @@ public class LogTraceJsonEncoder<E extends ILoggingEvent> extends EncoderBase<E>
             jg.writeString(hash, 0, hash.length);
             jg.writeEndObject();
         }
+    }
+
+    private IThrowableProxy getRootThrowableProxy(final IThrowableProxy thrown) {
+        IThrowableProxy result = thrown;
+        while (true) {
+            final IThrowableProxy parent = result.getCause();
+            if (parent != null) {
+                result = parent;
+            } else {
+                break;
+            }
+        }
+        return result;
     }
 
 }

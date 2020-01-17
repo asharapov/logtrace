@@ -2,13 +2,13 @@ package io.github.asharapov.logtrace;
 
 import java.io.IOException;
 
+import io.github.asharapov.logtrace.model.LogRecord;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.event.Level;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Тесты log appenders без использования публичного LogTrace API.
@@ -64,6 +64,30 @@ public abstract class SimpleTest extends AbstractTest {
                 .assertMDC()
                 .assertThrownIsNull()
                 .assertContextIsNull();
+        assertFalse(logReader.hasNext());
+    }
+
+    @Test
+    void test03() throws Exception {
+        assertFalse(logReader.hasNext());
+        try {
+            try {
+                throwDeepTrace(3);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                throw new Exception(e.getMessage(), e);
+            }
+        } catch (Exception ee) {
+            log.error("Wrapped exception for a: " + ee.getMessage(), ee);
+        }
+        final LogRecord r1 = logReader.nextRecord();
+        final LogRecord r2 = logReader.nextRecord();
+        assertNotNull(r1.thrown);
+        assertNotNull(r2.thrown);
+        assertNotNull(r1.thrown.hash);
+        assertNotNull(r2.thrown.hash);
+        assertEquals(r1.thrown.hash, r2.thrown.hash);
+        assertNotEquals(r1.thrown.stack, r2.thrown.stack);
         assertFalse(logReader.hasNext());
     }
 

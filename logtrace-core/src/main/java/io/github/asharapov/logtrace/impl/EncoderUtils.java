@@ -207,16 +207,16 @@ public class EncoderUtils {
          * Вычисляет md5 хэш от указанного массива байт и возвращает результат в виде
          * массива символов с 16-ричным представлением полученного хэша.
          *
-         * @param srcData массив байт для которого требуется вернуть подпись.
+         * @param src строка для которой требуется вернуть ее подпись.
          * @return строка с шестнадцатиричным представлением содержимого исходного массива.
          */
-        public char[] digest(final byte[] srcData) {
-            if (srcData == null || srcData.length == 0)
+        public char[] digest(final String src) {
+            if (src == null || src.isEmpty())
                 return EMPTY_CHARS;
-            final byte[] dstData = digester.digest(srcData);
-            final char[] chars = new char[dstData.length * 2];
-            for (int i = 0, p = 0; i < dstData.length; i++) {
-                final byte b = dstData[i];
+            final byte[] dgst = digester.digest(src.getBytes(StandardCharsets.UTF_8));
+            final char[] chars = new char[dgst.length * 2];
+            for (int i = 0, p = 0; i < dgst.length; i++) {
+                final byte b = dgst[i];
                 chars[p++] = HEX_DIGITS[(0xF0 & b) >>> 4];
                 chars[p++] = HEX_DIGITS[0x0F & b];
             }
@@ -233,10 +233,23 @@ public class EncoderUtils {
             if (cause == null)
                 return;
 
-            final StringWriter buf = new StringWriter(512);
-            cause.printStackTrace(new PrintWriter(buf, false));
+//            final SegmentedStringWriter sw = new SegmentedStringWriter(null);
+            final StringWriter sw = new StringWriter(1024);
+            final PrintWriter pw = new PrintWriter(sw, false);
+            cause.printStackTrace(pw);
+            final StringBuffer buf = sw.getBuffer();
             final String stack = buf.toString();
-            final char[] hash = digest(stack.getBytes(StandardCharsets.UTF_8));
+
+            final Throwable rootCause = getRootCause(cause);
+            final String rootCauseStack;
+            if (rootCause == cause) {
+                rootCauseStack = stack;
+            } else {
+                buf.setLength(0);
+                rootCause.printStackTrace(pw);
+                rootCauseStack = buf.toString();
+            }
+            final char[] hash = digest(rootCauseStack);
 
             jg.writeObjectFieldStart("thrown");
             jg.writeStringField("cls", cause.getClass().getName());
@@ -246,6 +259,19 @@ public class EncoderUtils {
             jg.writeFieldName("hash");
             jg.writeString(hash, 0, hash.length);
             jg.writeEndObject();
+        }
+
+        private Throwable getRootCause(final Throwable cause) {
+            Throwable result = cause;
+            while (true) {
+                final Throwable parent = result.getCause();
+                if (parent != null) {
+                    result = parent;
+                } else {
+                    break;
+                }
+            }
+            return result;
         }
 
         public void writeMessageContext(final JsonGenerator jg, final Map<String, ?> mdc) throws IOException {
