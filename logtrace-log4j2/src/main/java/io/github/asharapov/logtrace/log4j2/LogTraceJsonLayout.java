@@ -111,7 +111,7 @@ public class LogTraceJsonLayout extends AbstractStringLayout {
         super(config, charset, headerSerializer, footerSerializer);
         this.formatted = formatted;
         this.factory = new JsonFactory();
-        this.factory.enable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
+        this.factory.disable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
     }
 
     public boolean isFormatted() {

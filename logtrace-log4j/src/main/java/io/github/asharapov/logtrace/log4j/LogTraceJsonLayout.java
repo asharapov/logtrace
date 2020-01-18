@@ -27,7 +27,7 @@ public class LogTraceJsonLayout extends Layout {
         super();
         this.scopeManager = LogTracer.getDefault().scopeManager();
         this.factory = new JsonFactory();
-        this.factory.enable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
+        this.factory.disable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
         this.formatted = false;
     }
 
