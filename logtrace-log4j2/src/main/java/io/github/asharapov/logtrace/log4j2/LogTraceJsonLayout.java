@@ -23,9 +23,9 @@ import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.util.ReadOnlyStringMap;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.logging.log4j.util.TriConsumer;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
-import io.github.asharapov.logtrace.impl.EncoderUtils;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.spi.EncoderUtils;
 
 /**
  * @author Anton Sharapov

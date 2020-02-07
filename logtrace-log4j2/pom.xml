@@ -18,6 +18,7 @@
     </description>
 
     <properties>
+        <module-name>io.github.asharapov.logtrace.log4j2v</module-name>
         <log4j.version>2.12.1</log4j.version>
     </properties>
 

@@ -1,5 +1,7 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
+import io.github.asharapov.logtrace.api.DefaultConfiguration;
+import io.github.asharapov.logtrace.api.LogTracer;
 import io.github.asharapov.logtrace.impl.BaseLogTracer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

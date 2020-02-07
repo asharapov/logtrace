@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace.model;
+package io.github.asharapov.logtrace.tests.model;
 
 import java.util.Collections;
 import java.util.Date;
@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.asharapov.logtrace.LogReader;
-import io.github.asharapov.logtrace.LogTracer;
+import io.github.asharapov.logtrace.tests.LogReader;
+import io.github.asharapov.logtrace.api.LogTracer;
 import org.slf4j.event.Level;
 import static org.junit.jupiter.api.Assertions.*;
 

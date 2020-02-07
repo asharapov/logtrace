@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.io.IOException;
 import java.nio.file.Files;

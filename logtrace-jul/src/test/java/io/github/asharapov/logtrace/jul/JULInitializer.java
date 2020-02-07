@@ -7,7 +7,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
-import io.github.asharapov.logtrace.Initializer;
+import io.github.asharapov.logtrace.tests.Initializer;
 
 /**
  * @author Anton Sharapov

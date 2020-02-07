@@ -5,12 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.asharapov.logtrace.EventFilter;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
-import io.github.asharapov.logtrace.ScopeManager;
-import io.github.asharapov.logtrace.SpanBuilder;
-import io.github.asharapov.logtrace.Tag;
+import io.github.asharapov.logtrace.api.EventFilter;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.api.ScopeManager;
+import io.github.asharapov.logtrace.api.SpanBuilder;
+import io.github.asharapov.logtrace.api.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

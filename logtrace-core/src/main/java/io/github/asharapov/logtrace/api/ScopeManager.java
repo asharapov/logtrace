@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.api;
 
 /**
  * Отвечает за сопоставление активацию нового экземпляра {@link LogSpan} и предоставлением доступа к активному экземпляру {@link LogSpan}.

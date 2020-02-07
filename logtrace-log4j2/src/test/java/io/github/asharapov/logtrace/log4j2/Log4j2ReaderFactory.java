@@ -3,8 +3,8 @@ package io.github.asharapov.logtrace.log4j2;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import io.github.asharapov.logtrace.LogReader;
-import io.github.asharapov.logtrace.LogReaderFactory;
+import io.github.asharapov.logtrace.tests.LogReader;
+import io.github.asharapov.logtrace.tests.LogReaderFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Logger;

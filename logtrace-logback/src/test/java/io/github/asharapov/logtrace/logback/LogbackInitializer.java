@@ -1,6 +1,6 @@
 package io.github.asharapov.logtrace.logback;
 
-import io.github.asharapov.logtrace.Initializer;
+import io.github.asharapov.logtrace.tests.Initializer;
 
 /**
  * @author Anton Sharapov

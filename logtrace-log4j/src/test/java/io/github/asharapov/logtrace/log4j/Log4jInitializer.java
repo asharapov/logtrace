@@ -2,7 +2,7 @@ package io.github.asharapov.logtrace.log4j;
 
 import java.net.URL;
 
-import io.github.asharapov.logtrace.Initializer;
+import io.github.asharapov.logtrace.tests.Initializer;
 import org.apache.log4j.PropertyConfigurator;
 
 /**

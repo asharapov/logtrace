@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace.impl;
+package io.github.asharapov.logtrace.spi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,8 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.BufferRecycler;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.Tag;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.Tag;
 
 /**
  * Код общий для всех реализаций кодировщиков логов.

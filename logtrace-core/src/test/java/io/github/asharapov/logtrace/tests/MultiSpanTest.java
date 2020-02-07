@@ -1,8 +1,10 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.util.Date;
 
-import io.github.asharapov.logtrace.model.SessionInfo;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.tests.model.SessionInfo;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

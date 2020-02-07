@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.util.ServiceLoader;
 

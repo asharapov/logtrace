@@ -8,8 +8,8 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
-import io.github.asharapov.logtrace.LogReader;
-import io.github.asharapov.logtrace.LogReaderFactory;
+import io.github.asharapov.logtrace.tests.LogReader;
+import io.github.asharapov.logtrace.tests.LogReaderFactory;
 import org.slf4j.LoggerFactory;
 
 /**

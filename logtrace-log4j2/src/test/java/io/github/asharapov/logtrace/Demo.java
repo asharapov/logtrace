@@ -1,5 +1,7 @@
 package io.github.asharapov.logtrace;
 
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

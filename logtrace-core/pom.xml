@@ -16,6 +16,7 @@
     <description>LogTrace public API</description>
 
     <properties>
+        <module-name>io.github.asharapov.logtrace</module-name>
     </properties>
 
     <dependencies>

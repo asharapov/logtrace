@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -10,7 +10,7 @@ import java.util.EnumSet;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.asharapov.logtrace.model.LogRecord;
+import io.github.asharapov.logtrace.tests.model.LogRecord;
 
 /**
  * @author Anton Sharapov

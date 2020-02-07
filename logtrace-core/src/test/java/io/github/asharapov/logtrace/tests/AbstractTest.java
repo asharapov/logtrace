@@ -1,8 +1,9 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.io.IOException;
 import java.util.ServiceLoader;
 
+import io.github.asharapov.logtrace.api.LogTracer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

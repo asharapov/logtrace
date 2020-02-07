@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.api;
 
 /**
  * @author Anton Sharapov

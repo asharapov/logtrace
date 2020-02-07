@@ -1,8 +1,9 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -61,8 +62,8 @@ public class DefaultConfiguration {
 
     public LogTracer makeTracer() {
         try {
-            return cls.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
+            return cls.getConstructor().newInstance();
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             try {
                 final Method method = cls.getMethod("getInstance");
                 final Object result = method.invoke(null);

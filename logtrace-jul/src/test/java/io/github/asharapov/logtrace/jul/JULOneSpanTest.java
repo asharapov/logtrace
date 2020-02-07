@@ -1,6 +1,6 @@
 package io.github.asharapov.logtrace.jul;
 
-import io.github.asharapov.logtrace.OneSpanTest;
+import io.github.asharapov.logtrace.tests.OneSpanTest;
 
 /**
  * Тесты включающие в себя работу с одним экземпляром LogSpan.

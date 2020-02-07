@@ -1,4 +1,4 @@
-package io.github.asharapov.logtrace.model;
+package io.github.asharapov.logtrace.tests.model;
 
 import java.util.Date;
 

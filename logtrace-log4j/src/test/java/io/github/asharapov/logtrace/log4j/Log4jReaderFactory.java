@@ -8,8 +8,8 @@ import java.util.Enumeration;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-import io.github.asharapov.logtrace.LogReader;
-import io.github.asharapov.logtrace.LogReaderFactory;
+import io.github.asharapov.logtrace.tests.LogReader;
+import io.github.asharapov.logtrace.tests.LogReaderFactory;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Category;
 import org.apache.log4j.FileAppender;

@@ -1,18 +1,18 @@
-package io.github.asharapov.logtrace.model;
+package io.github.asharapov.logtrace.tests.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Дескриптор бизнес-операций выполнение которых было инициировано пользователем
+ * Дескриптор работы с хранилищем данных
  * (в объеме необходимом для задач аудита и построения аналитических отчетов).
  *
  * @author Anton Sharapov
  */
-public class UserAction {
-    public String uid;
+public class InternalAction {
+    @JsonProperty("name")
     public String name;
-    public String arg1;
-    public String arg2;
+    @JsonProperty("args")
+    public String args;
 
     @JsonProperty("@time")
     public Long duration;

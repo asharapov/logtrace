@@ -1,8 +1,8 @@
-package io.github.asharapov.logtrace;
+package io.github.asharapov.logtrace.tests;
 
 import java.io.IOException;
 
-import io.github.asharapov.logtrace.model.LogRecord;
+import io.github.asharapov.logtrace.tests.model.LogRecord;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

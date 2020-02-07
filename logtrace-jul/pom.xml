@@ -18,6 +18,7 @@
     </description>
 
     <properties>
+        <module-name>io.github.asharapov.logtrace.jul</module-name>
     </properties>
 
     <dependencies>

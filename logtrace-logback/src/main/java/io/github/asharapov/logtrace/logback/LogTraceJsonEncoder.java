@@ -11,10 +11,10 @@ import ch.qos.logback.core.encoder.EncoderBase;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.ByteArrayBuilder;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
-import io.github.asharapov.logtrace.ScopeManager;
-import io.github.asharapov.logtrace.impl.EncoderUtils;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.api.ScopeManager;
+import io.github.asharapov.logtrace.spi.EncoderUtils;
 import org.slf4j.Marker;
 
 /**

@@ -7,10 +7,10 @@ import java.util.logging.LogRecord;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.io.SegmentedStringWriter;
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
-import io.github.asharapov.logtrace.ScopeManager;
-import io.github.asharapov.logtrace.impl.EncoderUtils;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.api.ScopeManager;
+import io.github.asharapov.logtrace.spi.EncoderUtils;
 
 public class LogTraceJsonFormatter extends Formatter {
 

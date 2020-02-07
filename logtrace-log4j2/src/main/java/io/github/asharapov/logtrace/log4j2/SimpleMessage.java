@@ -1,8 +1,8 @@
 package io.github.asharapov.logtrace.log4j2;
 
-import io.github.asharapov.logtrace.LogSpan;
-import io.github.asharapov.logtrace.LogTracer;
-import io.github.asharapov.logtrace.ScopeManager;
+import io.github.asharapov.logtrace.api.LogSpan;
+import io.github.asharapov.logtrace.api.LogTracer;
+import io.github.asharapov.logtrace.api.ScopeManager;
 
 /**
  * @author Anton Sharapov

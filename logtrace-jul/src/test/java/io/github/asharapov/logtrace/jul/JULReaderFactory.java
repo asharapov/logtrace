@@ -9,8 +9,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import io.github.asharapov.logtrace.LogReader;
-import io.github.asharapov.logtrace.LogReaderFactory;
+import io.github.asharapov.logtrace.tests.LogReader;
+import io.github.asharapov.logtrace.tests.LogReaderFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.JDK14LoggerFactory;
 
