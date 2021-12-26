@@ -1,0 +1,123 @@
+version: '3.8'
+
+networks:
+  demo-net:
+    driver: bridge
+
+volumes:
+  els-data:
+    driver: local
+  fbn-data:
+    driver: local
+  vec-data:
+    driver: local
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - els-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - demo-net
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.2
+    container_name: kibana
+    environment:
+      - SERVER_NAME=kibana
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - demo-net
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.16.2
+    container_name: filebeat
+    command: filebeat -e -strict.perms=false
+    environment:
+      - ELASTICSEARCH_HOSTS=elasticsearch:9200
+    volumes:
+      - fbn-data:/usr/share/filebeat/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./etc/elastic-template-logtrace.json:/usr/share/filebeat/elastic-template-logtrace.json:ro
+      - ./:/app:ro
+    networks:
+      - demo-net
+    depends_on:
+      - elasticsearch
+      - kibana
+    restart: "no"
+
+
+  fluentbit:
+    image: fluent/fluent-bit:1.8
+    container_name: fluentbit
+    volumes:
+      - ./etc/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./etc/fluent-bit-parsers.conf:/fluent-bit/etc/fluent-bit-parsers.conf:ro
+      - ./:/app:ro
+    ports:
+      - "2020:2020"
+      - "24224:24224"
+    networks:
+      - demo-net
+    depends_on:
+      - elasticsearch
+      - kibana
+    restart: "no"
+
+
+  vector:
+    image: timberio/vector:0.X-debian
+    container_name: vector
+    environment:
+      - ELASTICSEARCH_HOSTS=elasticsearch:9200
+      - LOG=info
+    volumes:
+      - vec-data:/var/lib/vector
+      - ./etc/vector.toml:/etc/vector/vector.toml:ro
+      - ./:/app:ro
+    ports:
+      - "8383:8383"
+      - "24225:24224"
+    networks:
+      - demo-net
+    depends_on:
+      - elasticsearch
+#      - kibana
+    restart: "no"
+
+
+  stream:
+    image: alpine:latest
+    container_name: stream
+    command: ["sh", "-c", "iostat -c 5"]
+    logging:
+      driver: fluentd
+      options:
+#        fluentd-address: host.docker.internal:24225
+        fluentd-address: host.docker.internal:24224
+        tag: demo.stream
+#        mode: non-blocking
+#        max-buffer-size: 1m
+    networks:
+      - demo-net
+    depends_on:
+      - fluentbit
+    restart: "no"
+

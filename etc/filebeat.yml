@@ -1,0 +1,53 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /app/logs/*-elastic.log
+    fields_under_root: true
+    json.keys_under_root: true
+    json.overwrite_keys: true
+#    ignore_older: 12h
+    close_inactive: 60m
+    close_removed: true
+    fields:
+      subsystem: "demo"
+    index: "logs-filebeat-%{+yyyy.MM.dd}"
+
+
+processors:
+  - rename:
+      fields:
+        - from: "host.name"
+          to: "log.host"
+        - from: "log.file.path"
+          to: "log.src"
+      ignore_missing: true
+  - drop_fields:
+      fields: [ "agent", "ecs", "input", "host", "log.file", "log.offset", "docker.container.labels" ]
+      ignore_missing: true
+#  - add_host_metadata: ~
+#  - add_cloud_metadata: ~
+
+
+filebeat.config.modules:
+  enabled: false
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+
+setup.template.enabled: false
+setup.template.overwrite: false
+setup.template.name: "logs-filebeat"
+setup.template.pattern: "logs-filebeat-*"
+setup.template.json.enabled: true
+setup.template.json.path: "elastic-template-logtrace.json"
+setup.template.json.name: "logs-filebeat"
+
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS:localhost:9200}'
+  username: '${ELASTICSEARCH_USERNAME:}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
+
+logging.level: debug
+logging.metrics.enabled: false

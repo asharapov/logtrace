@@ -1,0 +1,40 @@
+# https://vector.dev/docs/setup/quickstart/
+
+[sources.stream]
+type = "fluent"
+address = "0.0.0.0:24224"
+
+[sources.files]
+type = "file"
+include = [ "/app/logs/*-elastic.log" ]
+read_from = "beginning"
+host_key = "host"
+file_key = "file"
+
+
+[transforms.json_files]
+type = "remap"
+inputs = ["files"]
+source = """
+rec = parse_json!(.message)
+rec.log.host = .host
+rec.log.src = .file
+. = rec
+"""
+
+
+[sinks.es_cluster]
+type = "elasticsearch"
+inputs = ["json_files"]
+host = "http://${ELASTICSEARCH_HOSTS}"
+mode = "data_stream"
+data_stream.type = "logs"
+data_stream.dataset = "vector"
+data_stream.namespace = "%Y-%m-%d"
+
+
+[sinks.stdout]
+type = "console"
+inputs = ["stream"]
+target = "stdout"
+encoding = "json"
